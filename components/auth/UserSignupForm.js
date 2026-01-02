@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { userAuth } from '@/lib/api/userAuth';
+import { useAuth } from '@/context/AuthContext';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
 
 export default function UserSignupForm() {
@@ -13,27 +12,18 @@ export default function UserSignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
+  
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    try {
-      const response = await userAuth.signup(name, email, password);
-      
-      if (!response.ok) {
-         const data = await response.json();
-         setError(data.message || 'Registration failed');
-         setLoading(false);
-         return;
-      }
-
-      // Success - Redirect to login
-      router.push('/user/login?registered=true');
-    } catch (err) {
-      setError('Network error. Please try again.');
+    const result = await register(name, email, password, 'user');
+    
+    if (!result.success) {
+      setError(result.error);
       setLoading(false);
     }
   };

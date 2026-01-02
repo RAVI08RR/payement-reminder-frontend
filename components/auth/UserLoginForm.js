@@ -53,7 +53,7 @@ export default function UserLoginForm() {
             <div>
                 <div className="flex justify-between items-center mb-1">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                    <a href="#" className="text-xs text-blue-500 hover:text-blue-600">Forgot?</a>
+                    <Link href="/user/forgot-password" title="Go to Forgot Password" className="text-xs text-blue-500 hover:text-blue-600 transition-colors">Forgot?</Link>
                 </div>
                 <div className="relative">
                     <input 

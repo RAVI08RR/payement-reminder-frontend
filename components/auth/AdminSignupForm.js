@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/api/adminAuth';
+import { useAuth } from '@/context/AuthContext';
 import { Shield, UserPlus, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminSignupForm() {
@@ -13,27 +12,18 @@ export default function AdminSignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
+  
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    try {
-      const response = await adminAuth.signup(name, email, password);
-      
-      if (!response.ok) {
-         const data = await response.json();
-         setError(data.message || 'Registration failed');
-         setLoading(false);
-         return;
-      }
-
-      // Success - Redirect to login
-      router.push('/admin/login?registered=true');
-    } catch (err) {
-      setError('Network error. Please try again.');
+    const result = await register(name, email, password, 'admin');
+    
+    if (!result.success) {
+      setError(result.error);
       setLoading(false);
     }
   };
