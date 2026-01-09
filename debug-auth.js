@@ -10,7 +10,7 @@ const loginData = JSON.stringify({
 });
 
 const options = {
-  hostname: 'payment-reminder-backend-pec6.onrender.com',
+  hostname: 'payement-reminder-backend.onrender.com',
   port: 443,
   path: '/users/login',
   method: 'POST',
